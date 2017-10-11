@@ -1,0 +1,114 @@
+1. First of all, we need to install Anaconda3 in Linux (16.04):
+
+	a. Download The latest version of Anaconda3 based on your OS (Ubuntu is recommended)  via this link: 
+	https://repo.continuum.io/archive/
+
+	b. Recommended version of python is 3.5 or higher (I assumes you have python 3.5*)
+
+	c. After downloading, you just need to open a terminal and run this command: bash (file_name).sh
+
+
+2. After that, we need three environments named pytorch_env, tensorflow_env, pytorch_tensorflow which each of them has its specific framework. so lets create them and install frameworks. Open a terminal:
+	
+	2.0. create the environments:
+		a. type "conda create -n pytorch_env python=3.5 anaconda"
+		b. type "conda create --name tensorflow_env --clone pytorch_env"
+
+	2.1. Create pytorch_env:
+
+		a. type "source activate pytorch_env"
+
+		b. for cpu installation of pytorch: type "conda install pytorch torchvision -c soumith"
+		
+		   for gpu installation of pytorch: (cuda version 8.0): type "conda install pytorch torchvision cuda80 -c soumith"
+		
+		   for gpu installation of pytorch: (cuda version 7.5): type "conda install pytorch torchvision -c soumith"
+		
+		c. type "source deactivate" and finished :)
+		
+		d. for checking whether pytorch is installed correctly or not:
+	
+			d.1. Open a terminal
+		
+			d.2. type "source activate pytorch_env"
+		
+			d.3. type "ipython"
+		
+			d.4. type "import torch"
+		
+				If this commnad won't cause an error, pytorch was successfully installed.
+	
+	2.2. Create tensorflow_env:
+		
+		
+		
+		a. type "source activate tensorflow_env"
+		
+		b. for cpu installation of tensorflow: type "pip install --ignore-installed --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.3.0-cp35-cp35m-linux_x86_64.whl"**
+		
+		   for gpu installation of tensorflow: (needs cuda version 8.0): type "pip install --ignore-installed --upgrade https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp35-cp35m-linux_x86_64.whl"
+		
+		c. for keras installation: type "pip install keras" and "pip install h5py"
+		   
+		d. type "source deactivate" and finished :)
+		
+		e. for checking whether tensorflow is installed correctly or not:
+		
+			e.1. Open a terminal
+		
+			e.2. type "source activate tensroflow_env"
+		
+			e.3. type "ipython"
+		
+			e.4. type:
+				
+				"import tensorflow as tf"
+				"import keras"
+		
+				If these commnads won't cause an error, tensorflow and keras were successfully installed.
+
+	2.3. Create pyotorch_tensorflow: for creating this env, you just need to combine above command in one env.
+
+		a. type "conda create --name pytorch_tensorflow --clone pytorch_env"
+		
+		b. type "source activate pytorch_tensorflow"
+		
+		c. pytorch is already installed in the env (as we clone the pytorch_env)
+
+		d. tensorflow installation:**
+
+			for cpu installation of tensorflow: type "pip install --ignore-installed --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.3.0-cp35-cp35m-linux_x86_64.whl"
+		
+		   	for gpu installation of tensorflow: (cuda version 8.0): type "pip install --ignore-installed --upgrade https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp35-cp35m-linux_x86_64.whl"
+
+		e. keras installation: type "pip install keras" and "pip install h5py"
+
+		f. for checking instllation:
+
+			f.1. Open a terminal
+
+			f.2. type: "source activate pytorch_tensorflow"
+
+			f.3. type: "ipython"
+
+			f.4. type:
+
+					   "import torch"
+					   "import tensorflow as tf"
+					   "import keras"
+			
+			        If these commnads won't cause an error, pytorch, tensorflow and keras 	were 					successfully installed.
+
+	* If you ever need to downgrade/upgrade python use: "conda install python==X.X"
+
+	** If you have problem with gpu version juste delete the environment("conda remove --name env_name --all") 
+	and try the cpu-version of tensorflow
+
+
+3. And finally, you need to add environments one by one in pycharm IDE (you can download/install it from JetBrain webpage):
+
+	3.0 Open pycharm and click: "File/New Project..."
+	3.1 Click on the gear icon at the top-right and select "Add Local"
+	3.2 select the "python3.X" file in the following directory "home/your_username/Anaconda3/envs/		your_environment_name/bin"
+	3.3 Now the environment is added as a interpreter and you can select it in your future projects.
+
