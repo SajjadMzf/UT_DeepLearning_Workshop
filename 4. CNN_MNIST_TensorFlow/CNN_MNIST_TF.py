@@ -13,7 +13,7 @@ mnist = input_data.read_data_sets("data/", one_hot = True)
 # 2. SET HYPER-PARAMETER
 training_epochs = 20
 batch_size = 100
-learning_rate = 0.5
+learning_rate = 0.01
 
 n_input = 28*28
 n_hidden_1 = 64
@@ -21,13 +21,14 @@ n_classes = 10
 
 hyper_str = "hidden{}_lr{}".format(n_hidden_1, learning_rate)
 total_batch = int(mnist.train.num_examples/batch_size)
-# 2. BUILD MODEL
+# 3. BUILD MODEL
+
 with tf.name_scope('Input'):
     x = tf.placeholder(tf.float32, [None, n_input], name = 'image')
     y = tf.placeholder(tf.float32, [None, n_classes], )
-    keep_prob = tf.Variable(1.0)
+    keep_prob = tf.Variable(1.0, trainable = False)
 with tf.device('/cpu:0'):
-    # 2.1 Define Layers
+    # 3.1 Define Layers
     with tf.name_scope('Conv_Layers'):
         x_reshaped = tf.reshape(x, [-1, 28, 28, 1])
 
@@ -44,20 +45,20 @@ with tf.device('/cpu:0'):
 
         dim = np.prod(pool_1.get_shape().as_list()[1:])
 
-        relu2_flat = tf.reshape(pool_1, [-1, dim])
+        pool1_flat = tf.reshape(pool_1, [-1, dim])
     with tf.name_scope('Dense_Layers'):
-        hidden_1 = tf.layers.dense(inputs=x,
+        hidden_1 = tf.layers.dense(inputs=pool1_flat,
                                    units=n_hidden_1,
                                    kernel_initializer= tf.random_normal_initializer(0., 0.1),
                                    activation=tf.nn.relu,
                                    name = 'dense1')
         drop_1 = tf.nn.dropout(hidden_1,keep_prob=keep_prob)
-        pred = tf.layers.dense(inputs=hidden_1,
+        pred = tf.layers.dense(inputs=drop_1,
                                kernel_initializer= tf.random_normal_initializer(0., 0.1),
                                units=n_classes,
                                name = 'dense2')
 
-    # 2.2 Define Loss and Optimizer
+    # 3.2 Define Loss and Optimizer
     with tf.name_scope('Loss_Optimizer'):
         loss = tf.losses.softmax_cross_entropy(logits=pred,
                                                onehot_labels=y)
@@ -65,35 +66,35 @@ with tf.device('/cpu:0'):
             GradientDescentOptimizer(learning_rate=learning_rate)\
             .minimize(loss)
 
-    # 2.3 Define Accuracy
+    # 3.3 Define Accuracy
     with tf.name_scope('Accuracy'):
         correct_pred = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 
-# 2.4 Create a summary for accuracy & loss:
+# 3.4 Create a summary for accuracy & loss:
 tf.summary.scalar('loss',loss)
 tf.summary.scalar('accuracy',accuracy)
 summeries  = tf.summary.merge_all()
 if not infer:
     writer = tf.summary.FileWriter(log_path+'/'+hyper_str)
 
-# 2.5 Add op for saving the model
+# 3.5 Add op for saving the model
 saver = tf.train.Saver()
-# 3. RUN THE MODEL
+# 4. RUN THE MODEL
 with tf.Session() as sess:
-    # 3.0 Initialize all variables
+    # 4.0 Initialize all variables
     sess.run(tf.global_variables_initializer())
 
 
     if not infer:
-        # 3.1 Use TensorBoard
+        # 4.1 Use TensorBoard
         writer.add_graph(sess.graph)
 
-        # 3.2 Training Loop
+        # 4.2 Training Loop
         for epoch in range(training_epochs):
 
             epoch_accr = 0
-            # 3.3 Loop over batches
+            # 4.3 Loop over batches
             for i in range(total_batch):
                 batch_x, batch_y = mnist.train.next_batch(batch_size)
                 _, batch_accr = \
