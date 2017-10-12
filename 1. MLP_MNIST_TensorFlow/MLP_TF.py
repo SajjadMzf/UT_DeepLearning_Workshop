@@ -31,11 +31,11 @@ with tf.device('/cpu:0'):
     with tf.name_scope('Layers'):
         hidden_1 = tf.layers.dense(inputs=x,
                                    units=n_hidden_1,
-                                   kernel_initializer= tf.random_normal_initializer(0., 1.),
+                                   kernel_initializer= tf.random_normal_initializer(0., 0.1),
                                    activation=tf.nn.relu,
                                    name = 'dense1')
         pred = tf.layers.dense(inputs=hidden_1,
-                               kernel_initializer= tf.random_normal_initializer(0., 1.),
+                               kernel_initializer= tf.random_normal_initializer(0., 0.1),
                                units=n_classes,
                                name = 'dense2')
 
