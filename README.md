@@ -11,3 +11,9 @@ Instructors:
 Sajjad Mozaffari (smozaffari72@gmail.com)
 
 Mohammad Mahdi Derakhshani
+
+Deep Learning Summer School Repository(University of Tehran):
+https://github.com/mohammad-py/UTDLSS2017
+
+Class Students can join the following group(The link will be deleted after some day):
+https://t.me/joinchat/BRnwKUHIQhDi_6cz9ghXoA
